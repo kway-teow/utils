@@ -1,0 +1,11 @@
+{
+    "entryPoints": ["src/utils/index.ts"],
+    "out": "docs",
+    "name": "@kway-teow/utils",
+    "includeVersion": true,
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeExternals": true,
+    "readme": "README.md",
+    "theme": "default"
+}
