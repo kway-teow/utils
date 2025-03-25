@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { formatPhone, formatIdCard, formatBankCard, formatAmount, formatPercent } from './index'
+import { formatPhone, formatIdCard, formatBankCard, formatAmount, formatPercent } from '../index'
 
 describe('formatPhone', () => {
   test('formats valid phone numbers with default separator', () => {

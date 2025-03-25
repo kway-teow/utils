@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { formatNumber } from './index'
+import { formatNumber } from '../index'
 
 describe('number', () => {
   test('formatNumber', () => {

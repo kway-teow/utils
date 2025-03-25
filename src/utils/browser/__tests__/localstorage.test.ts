@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { LocalStorageUtil } from './localstorage'
+import { LocalStorageUtil } from '../localstorage'
 
 describe('LocalStorageUtil', () => {
   // 在每个测试前清空 localStorage

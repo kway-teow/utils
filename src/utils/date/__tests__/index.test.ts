@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { formatDate, getRelativeTime, isSameDay, getCurrentDate, formatTime } from './index'
+import { formatDate, getRelativeTime, isSameDay, getCurrentDate, formatTime } from '../index'
 
 // 格式化日期 测试各种格式
 describe('formatDate', () => {
