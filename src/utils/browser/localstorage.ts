@@ -93,7 +93,7 @@ export class LocalStorageUtil {
 
   /**
      * 清空所有 localStorage
-     */
+  */
   static clear(): void {
     localStorage.clear()
   }
@@ -102,7 +102,7 @@ export class LocalStorageUtil {
      * 检查是否存在某个 key
      * @param key 键
      * @returns boolean
-     */
+  */
   static has(key: string): boolean {
     if (typeof key !== 'string') {
       throw new Error('key must be a string')
