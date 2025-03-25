@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { capitalize, camelToKebab, kebabToCamel } from './index'
+import { capitalize, camelToKebab, kebabToCamel } from '../index'
 
 // 正常输入
 describe('string', () => {

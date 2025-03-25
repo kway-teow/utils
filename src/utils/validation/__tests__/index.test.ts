@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { isEmail, isChinesePhone, isURL, isChineseIDCard, isEmpty } from './index'
+import { isEmail, isChinesePhone, isURL, isChineseIDCard, isEmpty } from '../index'
 
 describe('isEmail', () => {
   test('should return true for valid email addresses', () => {
