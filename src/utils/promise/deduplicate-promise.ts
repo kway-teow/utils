@@ -34,6 +34,7 @@ export function deduplicatePromise<T extends any[], R>(
 
   const getCacheKey = (args: T): string => {
     try {
+      // TODO 需要优化，使用更高效的序列化方式
       return JSON.stringify(args)
     }
     catch {
