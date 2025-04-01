@@ -1,7 +1,7 @@
 {
     "entryPoints": ["src/utils/index.ts"],
     "out": "docs",
-    "name": "@kway-teow/utils",
+    "name": "@kwayteow/utils",
     "includeVersion": true,
     "excludePrivate": true,
     "excludeProtected": true,

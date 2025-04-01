@@ -1,4 +1,4 @@
-# @kway-teow/utils
+# @kwayteow/utils
 
 [![npm version](https://img.shields.io/npm/v/@kwayteow/utils)](https://www.npmjs.com/package/@kwayteow/utils)
 [![npm downloads](https://img.shields.io/npm/dm/@kwayteow/utils)](https://www.npmjs.com/package/@kwayteow/utils)
