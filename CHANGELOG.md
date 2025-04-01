@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.2.0](https://github.com/kway-teow/utils/compare/v0.1.1...v0.2.0) (2025-04-01)
+
+
+### Features
+
+* 🎸 添加数学和URL工具函数，包括精确计算和URL处理功能 ([fbb0585](https://github.com/kway-teow/utils/commit/fbb0585515af3747a62ba61685a37b487d7d2b1f))
+
 ## [0.1.1](https://github.com/kway-teow/utils/compare/v0.1.0...v0.1.1) (2025-03-25)
 
 
