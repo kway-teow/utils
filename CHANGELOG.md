@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/kway-teow/utils/compare/v0.3.0...v0.3.1) (2025-04-01)
+
+
+### Bug Fixes
+
+* update package name format in README.md and typedoc.json ([4d0a3bb](https://github.com/kway-teow/utils/commit/4d0a3bbf46f76d154a565ab7385ce688fe719668))
+
 # [0.3.0](https://github.com/kway-teow/utils/compare/v0.2.0...v0.3.0) (2025-04-01)
 
 
