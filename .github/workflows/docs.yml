@@ -15,7 +15,11 @@ jobs:
   deploy-docs:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # 首先浅克隆主分支用于生成文档
       - uses: actions/checkout@v4
@@ -36,41 +40,14 @@ jobs:
       - name: Generate docs
         run: pnpm typedoc
 
-      - name: Setup Git
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-      # 单独检出 gh-pages 分支
-      - uses: actions/checkout@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          ref: gh-pages
-          path: gh-pages
-          sparse-checkout: .
-        continue-on-error: true
+          path: 'docs'
 
-      - name: Deploy to gh-pages
-        run: |
-          # 如果 gh-pages 分支不存在，创建一个空目录
-          if [ ! -d "gh-pages" ]; then
-            mkdir gh-pages
-            cd gh-pages
-            git init
-            git checkout --orphan gh-pages
-          else
-            cd gh-pages
-          fi
-          
-          # 清空当前目录（保留 .git）
-          find . -maxdepth 1 ! -name '.git' -exec rm -rf {} \;
-          
-          # 复制新生成的文档
-          cp -r ../docs/* .
-          
-          # 提交更改
-          git add -A
-          git commit -m "docs: update documentation [skip ci]" || echo "No changes to commit"
-          
-          # 设置远程仓库并推送
-          git remote add origin https://github.com/${GITHUB_REPOSITORY}.git || git remote set-url origin https://github.com/${GITHUB_REPOSITORY}.git
-          git push origin HEAD:gh-pages --force 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
