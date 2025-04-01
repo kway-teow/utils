@@ -9,19 +9,8 @@ browser/ - 浏览器相关
     UserAgent 解析
     设备信息检测
 
-promise/ - Promise 工具
-    并发控制
-    重试机制
-    超时处理
-    串行执行
-
 performance/ - 性能优化
     防抖
     节流
     缓存装饰器
     性能计时
-
-url/ - URL 处理工具
-    URL 参数解析
-    URL 构建
-    查询字符串处理
