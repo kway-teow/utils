@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.3.0](https://github.com/kway-teow/utils/compare/v0.2.0...v0.3.0) (2025-04-01)
+
+
+### Features
+
+* 🎸 增强 LocalStorage 工具类，添加过期检查和清理功能 ([36b016d](https://github.com/kway-teow/utils/commit/36b016d735b86e52a50d4e04ff7a48fac388d24a))
+
 # [0.2.0](https://github.com/kway-teow/utils/compare/v0.1.1...v0.2.0) (2025-04-01)
 
 
