@@ -1,21 +1,28 @@
 # @kway-teow/utils
 
+[![npm version](https://img.shields.io/npm/v/@kwayteow/utils)](https://www.npmjs.com/package/@kwayteow/utils)
+[![npm downloads](https://img.shields.io/npm/dm/@kwayteow/utils)](https://www.npmjs.com/package/@kwayteow/utils)
+
 一个实用的 TypeScript 工具函数库，提供了常用的工具函数集合。
 
 ## 安装
 
 ```bash
-npm install @kway-teow/utils
+npm install @kwayteow/utils
+
 # 或者
-yarn add @kway-teow/utils
+yarn add @kwayteow/utils
+
 # 或者
-pnpm add @kway-teow/utils
+pnpm add @kwayteow/utils
+
 ```
 
 ## 使用
 
 ```typescript
-import { formatDate, formatBankCard, capitalize } from '@kway-teow/utils'
+import { formatDate, formatBankCard, capitalize } from '@kwayteow/utils
+'
 
 // 日期格式化
 const date = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
