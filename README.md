@@ -21,8 +21,7 @@ pnpm add @kwayteow/utils
 ## 使用
 
 ```typescript
-import { formatDate, formatBankCard, capitalize } from '@kwayteow/utils
-'
+import { formatDate, formatBankCard, capitalize } from '@kwayteow/utils'
 
 // 日期格式化
 const date = formatDate(new Date(), 'YYYY-MM-DD HH:mm:ss')
