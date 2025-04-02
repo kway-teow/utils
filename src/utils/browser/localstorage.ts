@@ -16,7 +16,6 @@ export interface StorageData<T = any> {
 
 export class LocalStorageUtil {
   private static isInitialized = false
-
   /**
    * 初始化并劫持原生localStorage方法
    * 确保即使直接使用localStorage.getItem也能检查过期时间
@@ -33,7 +32,6 @@ export class LocalStorageUtil {
 
     // 保存原始的 getItem 方法
     const originalGetItem = localStorage.getItem.bind(localStorage)
-    LocalStorageUtil.originalGetItem = originalGetItem
 
     // 重写 getItem 方法
     localStorage.getItem = function (key: string): string | null {
