@@ -2,7 +2,7 @@
 pnpm dlx lint-staged
 
 # 检测tsc
-pnpm dlx tsc --noEmit
+npx tsc --noEmit
 
 # Run test for code test
 pnpm test
