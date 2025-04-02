@@ -16,41 +16,55 @@ export interface StorageData<T = any> {
 
 export class LocalStorageUtil {
   private static isInitialized = false
+  private static originalGetItem: Storage['getItem'] | null = null
 
   /**
    * 初始化并劫持原生localStorage方法
    * 确保即使直接使用localStorage.getItem也能检查过期时间
    */
   static init(): void {
-    if (this.isInitialized || typeof localStorage === 'undefined') {
+    if (LocalStorageUtil.isInitialized) {
       return
     }
 
-    // 保存原始方法
-    const originalGetItem = localStorage.getItem.bind(localStorage)
+    if (typeof window === 'undefined' || !window.localStorage) {
+      LocalStorageUtil.isInitialized = false
+      return
+    }
 
-    // 重写getItem方法
+    // 保存原始的 getItem 方法
+    const originalGetItem = localStorage.getItem.bind(localStorage)
+    LocalStorageUtil.originalGetItem = originalGetItem
+
+    // 重写 getItem 方法
     localStorage.getItem = function (key: string): string | null {
       const item = originalGetItem(key)
-      if (!item) return null
+      if (item === null) {
+        return null
+      }
 
       try {
         const data = JSON.parse(item)
-        // 检查是否是我们存储的格式并检查过期时间
-        if (data && typeof data === 'object' && 'value' in data && data.expires) {
-          if (data.expires < new Date().getTime()) {
-            localStorage.removeItem(key)
-            return null
-          }
+        if (
+          typeof data === 'object'
+          && data !== null
+          && 'value' in data
+          && 'expires' in data
+          && typeof data.expires === 'number'
+          && Date.now() > data.expires
+        ) {
+          localStorage.removeItem(key)
+          return null
         }
         return item
       }
       catch {
-        return item // 如果解析失败，返回原始值
+        // 如果解析失败，返回原始值
+        return item
       }
     }
 
-    this.isInitialized = true
+    LocalStorageUtil.isInitialized = true
   }
 
   /**
@@ -79,7 +93,7 @@ export class LocalStorageUtil {
     const data: StorageData<T> = {
       value,
       valueType,
-      ...(expires ? { expires: new Date().getTime() + expires * 3600 * 1000 } : {}),
+      ...(expires !== undefined ? { expires: Date.now() + expires * 3600 * 1000 } : {}),
     }
     localStorage.setItem(key, JSON.stringify(data))
   }
@@ -101,7 +115,7 @@ export class LocalStorageUtil {
       const data: StorageData<T> = JSON.parse(item)
 
       // 检查是否过期
-      if (data.expires && data.expires < new Date().getTime()) {
+      if (data.expires && data.expires < Date.now()) {
         localStorage.removeItem(key)
         return null
       }
@@ -151,38 +165,20 @@ export class LocalStorageUtil {
       throw new Error('key must be a string')
     }
 
-    return localStorage.getItem(key) !== null
-  }
+    const item = localStorage.getItem(key)
+    if (!item) return false
 
-  /**
-   * 清理所有过期的 localStorage 项目
-   * @returns 被清理的键的数组
-   */
-  static clearExpired(): string[] {
-    const expiredKeys: string[] = []
-
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (!key) continue
-
-      const item = localStorage.getItem(key)
-      if (!item) continue
-
-      try {
-        const data: StorageData = JSON.parse(item)
-        if (data.expires && data.expires < new Date().getTime()) {
-          localStorage.removeItem(key)
-          expiredKeys.push(key)
-          i-- // 因为删除了一项，索引需要回退一位
-        }
+    try {
+      const data: StorageData = JSON.parse(item)
+      if (data.expires && data.expires < Date.now()) {
+        localStorage.removeItem(key)
+        return false
       }
-      catch {
-        // 解析失败则跳过该项
-        continue
-      }
+      return true
     }
-
-    return expiredKeys
+    catch {
+      return true // 如果不是我们存储的格式，但存在值，则返回 true
+    }
   }
 }
 
