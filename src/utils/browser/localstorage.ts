@@ -16,7 +16,6 @@ export interface StorageData<T = any> {
 
 export class LocalStorageUtil {
   private static isInitialized = false
-  private static originalGetItem: Storage['getItem'] | null = null
 
   /**
    * 初始化并劫持原生localStorage方法
