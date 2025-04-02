@@ -1,6 +1,9 @@
 # Run lint-staged for code formatting and linting
 pnpm dlx lint-staged
 
+# 检测tsc
+pnpm dlx tsc --noEmit
+
 # Run test for code test
 pnpm test
 
