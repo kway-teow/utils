@@ -1,5 +1,13 @@
 # Changelog
 
+# [0.4.0](https://github.com/kway-teow/utils/compare/v0.3.1...v0.4.0) (2025-04-16)
+
+
+### Features
+
+* add promise utility exports to utils index ([2fe9155](https://github.com/kway-teow/utils/commit/2fe91550df18fc1ec30e82ad12dac5a4218bbec9))
+* 增强日期工具函数，支持秒级时间戳并改进日期验证 ([676110a](https://github.com/kway-teow/utils/commit/676110a2f82c8c906f7900812d697f2cce79b760))
+
 ## [0.3.1](https://github.com/kway-teow/utils/compare/v0.3.0...v0.3.1) (2025-04-01)
 
 
