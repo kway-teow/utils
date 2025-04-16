@@ -36,6 +36,15 @@ describe('formatDate', () => {
   test('handles string number input', () => {
     expect(formatDate('1716393600000', 'YYYY-MM-DD', 'Asia/Shanghai')).toBe('2024-05-23')
   })
+
+  test('handles seconds timestamp', () => {
+    // 1716393600 是秒级时间戳，对应 2024-05-23
+    expect(formatDate(1716393600, 'YYYY-MM-DD', 'Asia/Shanghai')).toBe('2024-05-23')
+  })
+
+  test('handles seconds timestamp as string', () => {
+    expect(formatDate('1716393600', 'YYYY-MM-DD', 'Asia/Shanghai')).toBe('2024-05-23')
+  })
 })
 
 // 获取相对时间 测试各种格式
@@ -74,6 +83,23 @@ describe('getRelativeTime', () => {
     const past = new Date('2022-03-22 12:00:00')
     expect(getRelativeTime(past, now)).toBe('2年前')
   })
+
+  test('handles seconds timestamp', () => {
+    // 当前时间的秒级时间戳
+    const now = Math.floor(Date.now() / 1000)
+    // 2小时前的秒级时间戳
+    const twoHoursAgo = now - 2 * 60 * 60
+
+    expect(getRelativeTime(twoHoursAgo, new Date(now * 1000))).toBe('2小时前')
+  })
+
+  test('handles seconds timestamp as string', () => {
+    const now = Math.floor(Date.now() / 1000)
+    const twoHoursAgo = now - 2 * 60 * 60
+
+    expect(getRelativeTime(twoHoursAgo.toString(), new Date(now * 1000))).toBe('2小时前')
+  })
+
   test('handles default value', () => {
     expect(getRelativeTime(null as any, undefined as any)).toBe('')
   })
@@ -104,6 +130,23 @@ describe('isSameDay', () => {
   test('handles timestamps', () => {
     const timestamp1 = new Date('2024-03-22 10:00:00').getTime()
     const timestamp2 = new Date('2024-03-22 15:30:00').getTime()
+    expect(isSameDay(timestamp1, timestamp2)).toBe(true)
+  })
+
+  test('handles seconds timestamps', () => {
+    // 同一天的两个不同时间点的秒级时间戳
+    const timestamp1 = Math.floor(new Date('2024-03-22 10:00:00').getTime() / 1000)
+    const timestamp2 = Math.floor(new Date('2024-03-22 15:30:00').getTime() / 1000)
+    expect(isSameDay(timestamp1, timestamp2)).toBe(true)
+
+    // 不同天的秒级时间戳
+    const timestamp3 = Math.floor(new Date('2024-03-23 10:00:00').getTime() / 1000)
+    expect(isSameDay(timestamp1, timestamp3)).toBe(false)
+  })
+
+  test('handles seconds timestamps as strings', () => {
+    const timestamp1 = Math.floor(new Date('2024-03-22 10:00:00').getTime() / 1000).toString()
+    const timestamp2 = Math.floor(new Date('2024-03-22 15:30:00').getTime() / 1000).toString()
     expect(isSameDay(timestamp1, timestamp2)).toBe(true)
   })
 

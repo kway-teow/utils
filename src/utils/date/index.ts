@@ -1,16 +1,40 @@
 /**
+ * 处理时间参数，统一返回毫秒时间戳
+ * @param date 日期对象、时间戳（秒或毫秒）或日期字符串
+ * @returns 毫秒级时间戳或原始Date对象
+ * @private
+ */
+function normalizeDate(date: Date | number | string): Date | number | string {
+  if (date instanceof Date) return date
+
+  // 处理字符串类型的数字
+  if (typeof date === 'string' && /^[0-9]+$/.test(date)) {
+    date = Number(date)
+  }
+
+  // 处理秒级时间戳（10位数字）转为毫秒级
+  if (typeof date === 'number' && date.toString().length === 10) {
+    return date * 1000
+  }
+
+  return date
+}
+
+/**
  * 格式化日期
- * @param date 日期对象或时间戳
+ * @param date 日期对象或时间戳（支持毫秒级和秒级时间戳）
  * @param format 格式化模板，例如 'YYYY-MM-DD HH:mm:ss'
  * @param timezone 时区，例如 'Asia/Shanghai'。默认使用本地时区
  * @returns 格式化后的日期字符串
  */
 export function formatDate(date: Date | number | string, format = 'YYYY-MM-DD', timezone?: string): string {
   if (date === null || date === undefined) return ''
-  if (typeof date === 'string' && /^[0-9]+$/.test(date)) {
-    date = Number(date)
-  }
+
+  date = normalizeDate(date)
   const d = new Date(date)
+
+  // 检查日期是否有效
+  if (isNaN(d.getTime())) return ''
 
   let year: number, month: number, day: number, hours: number, minutes: number, seconds: number
 
@@ -44,13 +68,19 @@ export function formatDate(date: Date | number | string, format = 'YYYY-MM-DD', 
 
 /**
  * 获取相对时间描述
- * @param date 目标日期
+ * @param date 目标日期（支持毫秒级和秒级时间戳）
  * @param now 当前日期（可选）
  * @returns 相对时间描述
  */
 export function getRelativeTime(date: Date | number | string, now = new Date()): string {
   if (date === null || date === undefined) return ''
+
+  date = normalizeDate(date)
   const targetDate = new Date(date)
+
+  // 检查日期是否有效
+  if (isNaN(targetDate.getTime())) return ''
+
   const currentDate = new Date(now)
   const diff = currentDate.getTime() - targetDate.getTime()
   const seconds = Math.floor(diff / 1000)
@@ -78,14 +108,22 @@ export function getRelativeTime(date: Date | number | string, now = new Date()):
 
 /**
  * 判断是否为同一天
- * @param date1 第一个日期
- * @param date2 第二个日期
+ * @param date1 第一个日期（支持毫秒级和秒级时间戳）
+ * @param date2 第二个日期（支持毫秒级和秒级时间戳）
  * @returns 是否为同一天
  */
 export function isSameDay(date1: Date | number | string | null | undefined, date2: Date | number | string | null | undefined): boolean {
   if (date1 === null || date1 === undefined || date2 === null || date2 === undefined) return false
+
+  date1 = normalizeDate(date1 as Date | number | string)
+  date2 = normalizeDate(date2 as Date | number | string)
+
   const d1 = new Date(date1)
   const d2 = new Date(date2)
+
+  // 检查日期是否有效
+  if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return false
+
   return (
     d1.getFullYear() === d2.getFullYear()
     && d1.getMonth() === d2.getMonth()
