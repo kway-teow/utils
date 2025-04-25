@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/kway-teow/utils/compare/v0.5.0...v0.5.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* add file utility exports to utils index ([f9d40ff](https://github.com/kway-teow/utils/commit/f9d40ff36d5b40db205fd9b095d4a5d7aa248377))
+
 # [0.5.0](https://github.com/kway-teow/utils/compare/v0.4.0...v0.5.0) (2025-04-25)
 
 
