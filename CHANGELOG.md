@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.5.0](https://github.com/kway-teow/utils/compare/v0.4.0...v0.5.0) (2025-04-25)
+
+
+### Features
+
+* add file fetching and downloading utilities with comprehensive tests ([0ee3d80](https://github.com/kway-teow/utils/commit/0ee3d80bc2f01a4c4baa8d3017b7b7be6df37804))
+
 # [0.4.0](https://github.com/kway-teow/utils/compare/v0.3.1...v0.4.0) (2025-04-16)
 
 
