@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.6.0](https://github.com/kway-teow/utils/compare/v0.5.1...v0.6.0) (2025-06-20)
+
+
+### Features
+
+* 增强 deduplicatePromise 函数，添加高级缓存选项和改进的类型定义 ([579a142](https://github.com/kway-teow/utils/commit/579a142e5d34f9e009fc4146d314077c28b3c1d7))
+
 ## [0.5.1](https://github.com/kway-teow/utils/compare/v0.5.0...v0.5.1) (2025-04-25)
 
 
