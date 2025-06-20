@@ -1,1 +1,5 @@
-export { deduplicatePromise } from './deduplicate-promise'
+export {
+  deduplicatePromise,
+  type DeduplicateOptions,
+  type DeduplicatedFunction,
+} from './deduplicate-promise'
