@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.7.0](https://github.com/kway-teow/utils/compare/v0.6.0...v0.7.0) (2025-07-08)
+
+
+### Features
+
+* 优化 deduplicatePromise 函数，通过用请求状态映射替换挂起请求跟踪并增强错误处理 ([0aaa4b9](https://github.com/kway-teow/utils/commit/0aaa4b9744c8af98c5c1ae3a6260685e66660123))
+
 # [0.6.0](https://github.com/kway-teow/utils/compare/v0.5.1...v0.6.0) (2025-06-20)
 
 
