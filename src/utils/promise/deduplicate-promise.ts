@@ -85,8 +85,16 @@ export function deduplicatePromise<T extends any[], R>(
   } = options
 
   // 缓存存储
-  const pendingRequests = new Map<string, Promise<R>>()
   const completedResults = new Map<string, CacheEntry<R>>()
+  // 正在进行的请求状态跟踪（不存储Promise，只存储状态）
+  const requestStatus = new Map<string, {
+    isLoading: boolean
+    startTime: number
+    callbacks: Array<{
+      resolve: (value: R) => void
+      reject: (error: any) => void
+    }>
+  }>()
 
   /**
    * 生成缓存key
@@ -100,7 +108,7 @@ export function deduplicatePromise<T extends any[], R>(
 
       // 基于特定字段生成key
       if (keyFields !== undefined) {
-        const selectedArgs = keyFields.map(index => args[index])
+        const selectedArgs = keyFields.map((index: number) => args[index])
         return JSON.stringify(selectedArgs)
       }
 
@@ -128,7 +136,8 @@ export function deduplicatePromise<T extends any[], R>(
         return Promise.resolve(fn(...args))
       }
     }
-    catch {
+    catch (error) {
+      console.error('shouldCache函数抛出错误', { args, error })
       // 如果shouldCache函数抛出错误，回退到正常缓存行为
     }
 
@@ -140,46 +149,94 @@ export function deduplicatePromise<T extends any[], R>(
       return Promise.resolve(cachedEntry.result)
     }
 
-    // 检查是否有正在进行中的相同请求
-    const pendingRequest = pendingRequests.get(key)
-    if (pendingRequest) {
-      return pendingRequest
-    }
+    // 创建独立的Promise - 每个请求都有自己的Promise
+    return new Promise<R>((resolve, reject) => {
+      const callback = { resolve, reject }
 
-    // 创建新请求
-    const request = Promise.resolve()
-      .then(() => fn(...args))
+      // 原子性操作：检查并设置状态
+      const existingStatus = requestStatus.get(key)
+
+      if (existingStatus && existingStatus.isLoading) {
+        // 已有请求在进行，加入等待队列
+        existingStatus.callbacks.push(callback)
+        return
+      }
+
+      // 立即设置状态，避免竞态条件
+      const newStatus = {
+        isLoading: true,
+        startTime: Date.now(),
+        callbacks: [callback],
+      }
+      requestStatus.set(key, newStatus)
+
+      // 异步执行实际请求
+      executeRequest(key, args, fn)
+    })
+  }
+
+  // 分离实际请求执行逻辑
+  const executeRequest = (
+    key: string,
+    args: T,
+    fn: (...args: T) => R | Promise<R>,
+  ) => {
+    Promise.resolve()
+      .then(() => {
+        return fn(...args)
+      })
       .then((result) => {
-        // 缓存成功结果
+        // 缓存结果
         completedResults.set(key, {
           result,
           timestamp: Date.now(),
         })
-        pendingRequests.delete(key)
-        return result
+
+        // 通知所有等待者
+        const status = requestStatus.get(key)
+        if (status) {
+          status.callbacks.forEach((callback, index) => {
+            try {
+              callback.resolve(result)
+            }
+            catch (error) {
+              console.error('回调执行失败', { error, key, index })
+            }
+          })
+        }
+
+        // 清理状态
+        requestStatus.delete(key)
       })
       .catch((error) => {
-        // 错误时清理进行中的请求，不缓存错误
-        pendingRequests.delete(key)
-        throw error
+        // 通知所有等待者
+        const status = requestStatus.get(key)
+        if (status) {
+          status.callbacks.forEach((callback, index) => {
+            try {
+              callback.reject(error)
+            }
+            catch (callbackError) {
+              console.error('错误回调执行失败', { callbackError, key, index })
+            }
+          })
+        }
+
+        // 清理状态
+        requestStatus.delete(key)
       })
-
-    // 存储进行中的请求
-    pendingRequests.set(key, request)
-
-    return request
   }
 
   // 清除所有缓存
   wrappedFn.clearCache = () => {
-    pendingRequests.clear()
+    requestStatus.clear()
     completedResults.clear()
   }
 
   // 清除特定key的缓存
   wrappedFn.clearKey = (...args: T) => {
     const key = getCacheKey(args)
-    pendingRequests.delete(key)
+    requestStatus.delete(key)
     completedResults.delete(key)
   }
 
