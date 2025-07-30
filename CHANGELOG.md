@@ -1,5 +1,12 @@
 # Changelog
 
+# [0.8.0](https://github.com/kway-teow/utils/compare/v0.7.0...v0.8.0) (2025-07-30)
+
+
+### Features
+
+* 添加 uncapitalize 函数和相应的字符串实用程序测试 ([75ac0b3](https://github.com/kway-teow/utils/commit/75ac0b3e5b19e779ac0abc7d005b70f198729f01))
+
 # [0.7.0](https://github.com/kway-teow/utils/compare/v0.6.0...v0.7.0) (2025-07-08)
 
 
