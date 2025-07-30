@@ -9,6 +9,16 @@ export const capitalize = (str: string | undefined): string => {
 }
 
 /**
+ * 首字母小写
+ * @param str 输入字符串
+ * @returns 首字母小写的字符串
+ */
+export const uncapitalize = (str: string | undefined): string => {
+  if (typeof str !== 'string') return ''
+  return str.charAt(0).toLowerCase() + str.slice(1)
+}
+
+/**
  * 驼峰转换为短横线
  * @param str 输入字符串
  * @returns 短横线格式的字符串
